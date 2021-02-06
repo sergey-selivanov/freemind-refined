@@ -1,0 +1,77 @@
+plugins {
+    id 'application'
+    id 'eclipse'
+
+    id 'org.beryx.jlink' version '2.23.3' // modular
+
+    id 'net.saliman.properties' version '1.5.1'
+    id 'com.github.ben-manes.versions' version '0.36.0'
+}
+
+repositories {
+    //jcenter()
+    mavenCentral()
+}
+
+dependencies {
+
+    // TODO https://github.com/Itiviti/gradle-jibx-plugin
+    implementation files('lib/bindings.jar')    // pre-generated with ant
+    //implementation files('lib/SimplyHTML-0.17.3.jar') // latest, fails
+    implementation files('lib/SimplyHTML.jar')
+    implementation group: 'gnu-regexp', name: 'gnu-regexp', version: '1.1.4'
+
+    implementation 'com.inet.jortho:jortho:1.0'
+
+    //implementation 'com.jgoodies:jgoodies-forms:1.9.0' // latest, fails
+    implementation 'com.jgoodies:forms:1.0.7'
+
+    //compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+    implementation group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
+    //implementation group: 'org.jibx', name: 'jibx-run', version: '1.3.1'
+    implementation group: 'org.jibx', name: 'jibx-run', version: '1.2.4'
+//    implementation group: 'javax.help', name: 'javahelp', version: '2.0.05'
+//    implementation group: 'org.codehaus.groovy', name: 'groovy', version: '3.0.7'
+
+    //compile group: 'org.apache.lucene', name: 'lucene-core', version: '8.7.0'
+    //compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: '8.7.0'
+    //compile group: 'org.apache.lucene', name: 'lucene-core', version: '4.10.4'
+//    implementation group: 'org.apache.lucene', name: 'lucene-queryparser', version: '4.10.4'
+//    implementation group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: '4.10.4'
+
+//    implementation group: 'org.apache.xmlgraphics', name: 'batik-svggen', version: '1.14'
+
+//    implementation (group: 'org.apache.xmlgraphics', name: 'fop', version: '2.6'){
+//        exclude module: 'xml-apis'
+//    }
+
+    testCompile 'junit:junit:4.13.1'
+}
+
+mainClassName = 'freemind.main.FreeMindStarter'
+
+
+// https://discuss.gradle.org/t/how-to-set-the-module-path-project-jigsaw-for-eclipse-projects-via-gradle/26801/3
+/*
+eclipse {
+    classpath {
+        file {
+            whenMerged {
+                entries.findAll { isModule(it) }.each {
+                    it.entryAttributes['module'] = 'true'
+                }
+                entries.findAll { isSource(it) && isTestScope(it) }.each {
+                    it.entryAttributes['test'] = 'true'
+                }
+                entries.findAll { isLibrary(it) && isTestScope(it) }.each {
+                    it.entryAttributes['test'] = 'true'
+                }
+            }
+        }
+    }
+}
+*/
+boolean isLibrary(entry) { return entry.properties.kind.equals('lib') }
+boolean isTestScope(entry) { return entry.entryAttributes.get('gradle_used_by_scope').equals('test'); }
+boolean isModule(entry) { isLibrary(entry) && !isTestScope(entry); }
+boolean isSource(entry) { return entry.properties.kind.equals('src'); }
