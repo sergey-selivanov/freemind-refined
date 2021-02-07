@@ -18,7 +18,15 @@ As of Feb 2021, original FreeMind is still useful and works good on latest Java.
 
 ## See Also
 
+### Original FreeMind:
+
 http://freemind.sourceforge.net
 
-http://freemind.sourceforge.net/wiki/index.php/Main_Page
+https://sourceforge.net/projects/freemind/
 
+
+### Freeplane, looks like actively developed/supported compatible alternative:
+
+https://sourceforge.net/projects/freeplane
+
+https://www.freeplane.org/wiki/index.php/Freeplane_features_you_were_missing_in_FreeMind

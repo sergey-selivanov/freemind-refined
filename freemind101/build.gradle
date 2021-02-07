@@ -2,25 +2,24 @@ plugins {
     id 'application'
     id 'eclipse'
 
-    id 'org.beryx.jlink' version '2.23.3' // modular
+    //id 'org.beryx.jlink' version '2.23.3' // modular
+    id 'org.beryx.runtime' version '1.12.1' // non modular
 
     id 'net.saliman.properties' version '1.5.1'
     id 'com.github.ben-manes.versions' version '0.36.0'
 }
 
 repositories {
-    //jcenter()
     mavenCentral()
 }
 
 dependencies {
 
-    // TODO https://github.com/Itiviti/gradle-jibx-plugin
     implementation files('lib/bindings.jar')    // pre-generated with ant
     //implementation files('lib/SimplyHTML-0.17.3.jar') // latest, fails
     implementation files('lib/SimplyHTML.jar')
     implementation files('lib/jortho-1.0.jar')
-//    implementation files('lib/jibx-run-1.2.4.jar')
+
     implementation group: 'gnu-regexp', name: 'gnu-regexp', version: '1.1.4'
 
 //    implementation 'com.inet.jortho:jortho:1.0'
@@ -30,9 +29,15 @@ dependencies {
 
     //compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
-    //implementation group: 'org.jibx', name: 'jibx-run', version: '1.3.1'
     implementation group: 'org.jibx', name: 'jibx-run', version: '1.3.3'
-//    implementation group: 'org.jibx', name: 'jibx-run', version: '1.2.4'
+    //implementation group: 'org.jibx', name: 'jibx-run', version: '1.3.1' // jibx compiled using jibx jars from fm-latest
+
+
+    // https://mvnrepository.com/artifact/com.formdev/flatlaf
+    runtime group: 'com.formdev', name: 'flatlaf', version: '1.0-rc2'
+
+    // substance doesn't work: "Unable to set Look & Feel: This method must be called on the Event Dispatch Thread"
+    //runtime group: 'org.pushing-pixels', name: 'radiance-substance', version: '3.5.1'
 
 
 //    implementation group: 'javax.help', name: 'javahelp', version: '2.0.05'
@@ -53,8 +58,74 @@ dependencies {
     testCompile 'junit:junit:4.13.1'
 }
 
+//application.mainModule = 'freemind'
 mainClassName = 'freemind.main.FreeMindStarter'
 
+
+runtime {
+    //options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    //options = ['--compress', '2', '--no-header-files', '--no-man-pages'] // , '--strip-native-commands' make start scripts fail
+    options = ['--compress', '2', '--no-header-files', '--no-man-pages', '--strip-native-commands']
+    modules = [
+    'java.desktop',
+    'java.logging',
+    'java.xml',
+    'java.datatransfer',
+    'java.sql' // jibx doesn't work without
+    ]
+
+    enableCds()
+
+    launcher {
+//        name = 'freemind'
+    }
+
+    enableCds()
+
+    jpackage {
+        //installerType = project.ext.installerType
+        installerType = 'deb'
+
+        imageName = 'freemind'
+        installerName = 'freemind'
+
+        installerOptions = [
+//            '--vendor', 'Sergey Selivanov',
+            '--verbose'
+        ]
+
+        if (org.gradle.internal.os.OperatingSystem.current().windows) {
+            appVersion = winver
+
+            icon = "${project.projectDir}/src/main/resources/images/amor.ico"
+
+            installerOptions += [
+                // saves generated wix files
+                // TODO customize wizard images?
+                '--temp', "${buildDir}/temp", // ? https://github.com/beryx/badass-runtime-plugin/issues/71
+
+                '--win-menu', '--win-shortcut', '--win-dir-chooser',
+                '--win-menu-group', 'FreeMind'
+            ]
+        }
+        if (org.gradle.internal.os.OperatingSystem.current().linux) {
+            // rpm: illegal char - in version
+//            if(project.ext.installerType == 'rpm'){
+//                appVersion = version.toString().replaceAll('-', '.')
+//            }
+
+  //          icon = "${project.projectDir}/src/main/resources/images/amor.png"
+
+            installerOptions += [
+                // TODO use imageName
+//                '--resource-dir', "build/jpackage/Cook Book/lib", // required for icon: https://github.com/beryx/badass-jlink-plugin/issues/148
+                '--linux-shortcut', '--linux-menu-group', 'Other'
+            ]
+        }
+    }
+
+
+}
 
 // https://discuss.gradle.org/t/how-to-set-the-module-path-project-jigsaw-for-eclipse-projects-via-gradle/26801/3
 /*
