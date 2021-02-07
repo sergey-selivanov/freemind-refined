@@ -19,9 +19,11 @@ dependencies {
     implementation files('lib/bindings.jar')    // pre-generated with ant
     //implementation files('lib/SimplyHTML-0.17.3.jar') // latest, fails
     implementation files('lib/SimplyHTML.jar')
+    implementation files('lib/jortho-1.0.jar')
+//    implementation files('lib/jibx-run-1.2.4.jar')
     implementation group: 'gnu-regexp', name: 'gnu-regexp', version: '1.1.4'
 
-    implementation 'com.inet.jortho:jortho:1.0'
+//    implementation 'com.inet.jortho:jortho:1.0'
 
     //implementation 'com.jgoodies:jgoodies-forms:1.9.0' // latest, fails
     implementation 'com.jgoodies:forms:1.0.7'
@@ -29,7 +31,10 @@ dependencies {
     //compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.10.3'
     //implementation group: 'org.jibx', name: 'jibx-run', version: '1.3.1'
-    implementation group: 'org.jibx', name: 'jibx-run', version: '1.2.4'
+    implementation group: 'org.jibx', name: 'jibx-run', version: '1.3.3'
+//    implementation group: 'org.jibx', name: 'jibx-run', version: '1.2.4'
+
+
 //    implementation group: 'javax.help', name: 'javahelp', version: '2.0.05'
 //    implementation group: 'org.codehaus.groovy', name: 'groovy', version: '3.0.7'
 
