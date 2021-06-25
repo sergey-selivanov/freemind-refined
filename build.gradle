@@ -34,7 +34,7 @@ dependencies {
 
 
     // https://mvnrepository.com/artifact/com.formdev/flatlaf
-    runtime group: 'com.formdev', name: 'flatlaf', version: '1.0-rc2'
+    runtimeOnly group: 'com.formdev', name: 'flatlaf', version: '1.0-rc2'
 
     // substance doesn't work: "Unable to set Look & Feel: This method must be called on the Event Dispatch Thread"
     //runtime group: 'org.pushing-pixels', name: 'radiance-substance', version: '3.5.1'
@@ -55,7 +55,7 @@ dependencies {
 //        exclude module: 'xml-apis'
 //    }
 
-    testCompile 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 //application.mainModule = 'freemind'
@@ -95,9 +95,9 @@ runtime {
         ]
 
         if (org.gradle.internal.os.OperatingSystem.current().windows) {
-            appVersion = winver
+//            appVersion = winver
 
-            icon = "${project.projectDir}/src/main/resources/images/amor.ico"
+//            icon = "${project.projectDir}/src/main/resources/images/amor.ico"
 
             installerOptions += [
                 // saves generated wix files
