@@ -881,7 +881,7 @@ public class FreeMind extends JFrame implements FreeMindMain {
                 pUserPreferences, pAutoPropertiesFile);
         IFreeMindSplash splash = null;
         frame.checkForAnotherInstance(args);
-        frame.initServer();
+//        frame.initServer();
         final FeedBack feedBack;
         // change here, if you don't like the splash
         if (true) {
